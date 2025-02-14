@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approval ESS</title>
+
+
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #07da63;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      padding: 10px; /* Adds spacing on small screens */
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    .container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px; /* Adds padding to avoid elements from touching the edges */
+    }
+
+    .form-container {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      margin-right: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      background-color: #222;
+      color: #fff;
+    }
+
+    button {
+      background-color: #555;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #777;
+    }
+
+    .wait-text {
+      text-align: center;
+      color: #bbb;
+      font-size: 12px;
+      margin-top: 15px;
+    }
+
+    /* Back button style */
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: #777;
+      border: 2px solid #777;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .back-button:hover {
+      background-color: #777;
+      border-color: #777;
+      transform: translateX(-5px);
+    }
+
+    .back-button:active {
+      transform: translateX(-2px);
+    }
+
+    /* Mobile responsiveness */
+    @media screen and (max-width: 600px) {
+      body {
+        padding: 20px;
+      }
+
+      .form-container {
+        padding: 15px;
+        max-width: 100%;
+      }
+
+      .back-button {
+        width: 100%;
+        padding: 12px 0;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      input, textarea, button {
+        font-size: 16px;
+        padding: 12px;
+      }
+      
+      .wait-text {
+        font-size: 10px;
+      }
+    }
+
+    @media screen and (max-width: 400px) {
+      .form-container {
+        padding: 10px;
+      }
+
+      .back-button {
+        padding: 10px 0;
+        font-size: 14px;
+      }
+
+      input, textarea, button {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+  
+</head>
+<body>
+  
+  <div class="container">
+    <div class="form-container">
+      <a href="javascript:history.back()" class="back-button">&lt; Back</a>
+      <h2>Approval ESS</h2>
+      <form name="submit-to-google-sheet">
+        <label for="full-name">Full Name</label>
+        <input type="text" name="FullName" id="full-name" placeholder="Full Name" required>
+        
+        <label for="date">Date</label>
+        <input type="text" name="Date" id="date" placeholder="Date" required>
+        
+        <label for="reason">Reason</label>
+        <textarea name="Reason" id="reason" rows="6" placeholder="Reason"></textarea>
+        
+        <button type="submit" class="btn btn2">Submit</button>
+      </form>
+      <span id="msg"></span>
+
+      <!-- Added wait message below the form -->
+      <p class="wait-text">Wait 5-10 seconds after submitting (mag-antay ng limang segundo pagkatapos mag-submit)</p>
+    </div>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxN4k-YiFtv1qdZVUMZtWsKNPRugp9JsXT-B_C7ZlG52I0G-7TQJ4q3ZQL14XLzA6fTig/exec';
+    const form = document.forms['submit-to-google-sheet'];
+    const msg = document.getElementById("msg");
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          msg.innerHTML = "Message sent Successfully!";
+          form.reset();
+        })
+        .catch(error => console.error('Error!', error.message));
+    });
+  </script>
+</body>
+</html>
